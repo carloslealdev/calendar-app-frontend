@@ -2,14 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { addHours } from "date-fns";
 
 // const tempEvent = {
-//   _id: new Date().getTime(),
+//   id: new Date().getTime(),
 //   title: "Cumpleaños del Jefe",
 //   notes: "Comprar pastel",
 //   start: new Date(),
 //   end: addHours(new Date(), 2),
 //   bgColor: "#fafafa",
 //   user: {
-//     _id: "123",
+//     id: "123",
 //     name: "Carlos",
 //   },
 // };
@@ -47,7 +47,7 @@ export const calendarSlice = createSlice({
     },
     onUpdateEvent: (state, { payload }) => {
       state.events = state.events.map((event) => {
-        if (event._id === payload._id) {
+        if (event.id === payload.id) {
           return payload;
         }
         return event;
@@ -57,10 +57,15 @@ export const calendarSlice = createSlice({
       if (state.activeEvent) {
         //Este fitro devuelve todos los eventos cuyo id sea distinto al id del evento activo
         state.events = state.events.filter(
-          (event) => event._id !== state.activeEvent._id
+          (event) => event.id !== state.activeEvent.id
         );
         state.activeEvent = null;
       }
+    },
+    onLogoutCalendar: (state) => {
+      state.events = [];
+      state.activeEvent = null;
+      state.isLoadingEvents = true;
     },
   },
 });
@@ -72,4 +77,5 @@ export const {
   onUpdateEvent,
   onDeleteEvent,
   onLoadEvents,
+  onLogoutCalendar,
 } = calendarSlice.actions;
